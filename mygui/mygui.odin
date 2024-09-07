@@ -88,14 +88,20 @@ do_button :: proc(pos: Vector2, text: string) -> bool {
 do_dropdown :: proc(dd: ^Dropdown) {
     cpos := to_vec2(dd.pos)
     csize := to_vec2(dd.size)
-    rl.DrawRectangleLines(cpos.x, cpos.y, csize.x, cast(i32)FONT_SIZE, rl.GRAY)
 
-    main_hovered := is_hovered(cpos, {csize.x, FONT_SIZE})
-    if main_hovered && rl.IsMouseButtonPressed(rl.MouseButton.LEFT) {
+    // draw box
+    rl.DrawRectangleLines(cpos.x, cpos.y, csize.x, cast(i32)FONT_SIZE, rl.GRAY)
+    p1: Vector2 = {dd.pos.x + dd.size.x - 15, dd.pos.y + 3}
+    p2: Vector2 = {dd.pos.x + dd.size.x - 10, dd.pos.y + 13}
+    p3: Vector2 = {dd.pos.x + dd.size.x - 5, dd.pos.y + 3}
+    rl.DrawTriangle(p1, p2, p3, rl.DARKGRAY)
+
+    box_hovered := is_hovered(cpos, {csize.x, FONT_SIZE})
+    if box_hovered && rl.IsMouseButtonPressed(rl.MouseButton.LEFT) {
 	dd.opened = true
 	dd.selected = false
     }
-    
+
     if dd.opened
     {
 	for _,i in dd.items {
@@ -106,7 +112,6 @@ do_dropdown :: proc(dd: ^Dropdown) {
 	    sy := cast(i32)(FONT_SIZE-1)
 
             hovered := is_hovered({x, y}, {sx, sy})	
-
 	    if hovered {rl.DrawRectangle(x, y, sx, sy+2, rl.GRAY)}
 
 	    rl.DrawRectangleLines(x, y, sx, sy+2, rl.GRAY)
