@@ -11,7 +11,8 @@ main :: proc() {
     rl.SetWindowMonitor(1)
 
     // define GUI elements
-    dd := mg.Dropdown {{50, 100}, {100, 100}, {"aveia", "maca", "banana", "melancia", "leite"}, -1, "", false, false};
+    dd := mg.Dropdown {{50, 100}, {100, 100}, -1, "", false, false, {"aveia", "maca", "banana", "melancia", "leite"}};
+    tb := mg.Textbox {{50, 200}, {100, 100}, "test", false}
     
     for !rl.WindowShouldClose() {
 	rl.BeginDrawing()
@@ -23,6 +24,7 @@ main :: proc() {
 	}
 
 	mg.do_dropdown(&dd)
+	mg.do_textbox(&tb)
 
 	rl.EndDrawing()
     }
