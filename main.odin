@@ -12,7 +12,7 @@ main :: proc() {
 
     // define GUI elements
     dd := mg.Dropdown {{50, 100}, {100, 100}, -1, "", false, false, {"aveia", "maca", "banana", "melancia", "leite"}};
-    tb := mg.Textbox {{50, 200}, {100, 100}, "test", false}
+    tb := mg.Textbox {{50, 200}, {100, 100}, "test", false, 0}
     
     for !rl.WindowShouldClose() {
 	rl.BeginDrawing()

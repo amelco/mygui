@@ -43,7 +43,8 @@ Textbox :: struct {
     pos: Vector2,
     size: Vector2,
     text: string,
-    active: bool
+    active: bool,
+    extra_chars: i32
 }
 
 // -----------------------------------------------------
@@ -141,11 +142,22 @@ do_dropdown :: proc(dd: ^Dropdown) {
 do_textbox :: proc(tb: ^Textbox) {
     cpos := to_vec2(tb.pos)
     csize := to_vec2(tb.size)
-
-    // TODO(Andre): Verify why text update is not working
+    sb := strings.builder_make()
+    strings.write_string(&sb, tb.text)
+    ctxt := strings.to_cstring(&sb)
+    ctxtsize := rl.MeasureText(ctxt, FONT_SIZE)
+    
+    // text is bigger than the box
+    folga : i32 = 15
+    big := ctxtsize - cast(i32)tb.size.x + folga >= 0
+    if (big) {
+	strings.builder_destroy(&sb)
+	strings.write_string(&sb, tb.text[tb.extra_chars:])
+	ctxt = strings.to_cstring(&sb)
+    }
+    
     rl.DrawRectangleLines(cpos.x, cpos.y, csize.x, cast(i32)FONT_SIZE, rl.BLUE if tb.active else rl.GRAY)
-    rl.DrawText(strings.clone_to_cstring(tb.text), cpos.x + 5, cpos.y, FONT_SIZE, default_text_color)
-    //fmt.println(tb.text)
+    rl.DrawText(ctxt, cpos.x + 5, cpos.y, FONT_SIZE, default_text_color)
 
     hovered := is_hovered(cpos, csize)
     if hovered && rl.IsMouseButtonPressed(rl.MouseButton.LEFT) {
@@ -155,23 +167,32 @@ do_textbox :: proc(tb: ^Textbox) {
     if tb.active {
 	k := rl.GetKeyPressed()
 	if k == rl.KeyboardKey.ENTER { tb.active = false }
-	else if k == rl.KeyboardKey.BACKSPACE {
-   	// TODO(Andre): verify why backspace is not working
-	    //fmt.println(tb.text)
-	    //fmt.println("<--")
+	else if k == rl.KeyboardKey.BACKSPACE && len(tb.text) > 0 {
+	    fmt.println("<==")
 	    tb.text = tb.text[:len(tb.text) - 1]
-	    //fmt.println(tb.text)
+	    if (big && tb.extra_chars > 0) {
+		tb.extra_chars -=1
+		fmt.println(tb.extra_chars)
+	    }
 	}
 	else {
 	    c := rl.GetCharPressed()
-	    sb := strings.builder_make()
-	    strings.write_string(&sb, tb.text)
-	    strings.write_rune(&sb, c)
-	    tb.text = strings.to_string(sb)
-	    // TODO(Andre): draw bliking bar after last character
+	    if (c != 0) {
+		strings.builder_destroy(&sb)
+		strings.write_string(&sb, tb.text)
+		strings.write_rune(&sb, c)
+		tb.text = strings.to_string(sb)
+		if big {
+		    tb.extra_chars += 1
+		    fmt.println(tb.extra_chars)
+		}
+	    }
 	}
 	if !hovered && rl.IsMouseButtonPressed(rl.MouseButton.LEFT) {
 	    tb.active = false
 	}
+	// blinking cursor
+	blinktime := cast(i32)(rl.GetTime()*5)%2 > 0
+	rl.DrawLine(cpos.x + rl.MeasureText(ctxt, FONT_SIZE) + 5+1, cpos.y+2, cpos.x + rl.MeasureText(ctxt, FONT_SIZE) + 5+1, cpos.y + FONT_SIZE-2, rl.BLACK if blinktime else default_background_color)
     }
 }
