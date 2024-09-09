@@ -8,7 +8,7 @@ A simple immediate mode GUI implemented using Odin and Raylib
 ## Features
 - [x] Button
 - [x] Combobox
-- [ ] Textbox
+- [x] Textbox
 - [ ] Listbox
 - [ ] RadioButtoon
 - [ ] CheckButon
