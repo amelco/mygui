@@ -1,5 +1,6 @@
+// implementation of imported functions
 function InitWindow() {
-    console.log("init_window_fora")
+    console.log("init_window_fora");
 }
 
 const importObject = {
@@ -11,9 +12,13 @@ const importObject = {
 
 // entry point
 (async () => {
-    const wasm = await WebAssembly.instantiateStreaming(fetch("soma.wasm"), importObject)
-    let a = 3
-    let b = 2
-    console.log("Soma: ",wasm.instance.exports.soma(a, b))
-    wasm.instance.exports.init_canvas()
+    const wasm = await WebAssembly.instantiateStreaming(
+	fetch("soma.wasm"),
+	importObject
+    );
+    
+    let a = 3;
+    let b = 2;
+    console.log("Soma: ",wasm.instance.exports.soma(a, b));
+    wasm.instance.exports.init_canvas();
 })();
