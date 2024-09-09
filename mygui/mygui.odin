@@ -104,6 +104,8 @@ do_dropdown :: proc(dd: ^Dropdown) {
     p3: Vector2 = {dd.pos.x + dd.size.x - 5, dd.pos.y + 3}
     rl.DrawTriangle(p1, p2, p3, rl.DARKGRAY)
 
+    // TODO(Andre): dropdown list must be closed when clicked outside and
+    // the selected item should not be changed (if any) when this happens
     box_hovered := is_hovered(cpos, {csize.x, FONT_SIZE})
     if box_hovered && rl.IsMouseButtonPressed(rl.MouseButton.LEFT) {
 	dd.active = true
@@ -166,13 +168,13 @@ do_textbox :: proc(tb: ^Textbox) {
 
     if tb.active {
 	k := rl.GetKeyPressed()
+	// TODO(Andre): implement arrow keys (left/right) behavior
 	if k == rl.KeyboardKey.ENTER { tb.active = false }
 	else if k == rl.KeyboardKey.BACKSPACE && len(tb.text) > 0 {
-	    fmt.println("<==")
+	    // TODO(Andre): keep deleting when hold
 	    tb.text = tb.text[:len(tb.text) - 1]
 	    if (big && tb.extra_chars > 0) {
 		tb.extra_chars -=1
-		fmt.println(tb.extra_chars)
 	    }
 	}
 	else {
@@ -184,7 +186,6 @@ do_textbox :: proc(tb: ^Textbox) {
 		tb.text = strings.to_string(sb)
 		if big {
 		    tb.extra_chars += 1
-		    fmt.println(tb.extra_chars)
 		}
 	    }
 	}
