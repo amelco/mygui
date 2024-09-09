@@ -32,9 +32,9 @@ Vec2 :: struct {
 Dropdown :: struct {
     pos: Vector2,
     size: Vector2,
+    active: bool,
     selected_index: i32,
     selected_text: string,
-    active: bool,
     item_selected: bool,
     items: []string,
 }
@@ -42,8 +42,8 @@ Dropdown :: struct {
 Textbox :: struct {
     pos: Vector2,
     size: Vector2,
-    text: string,
     active: bool,
+    text: string,
     extra_chars: i32
 }
 

@@ -9,10 +9,11 @@ INFO :: rl.TraceLogLevel.INFO
 main :: proc() {   
     rl.InitWindow(800, 600, "Hello")
     rl.SetWindowMonitor(1)
+    rl.SetTargetFPS(60)
 
     // define GUI elements
-    dd := mg.Dropdown {{50, 100}, {100, 100}, -1, "", false, false, {"aveia", "maca", "banana", "melancia", "leite"}};
-    tb := mg.Textbox {{50, 200}, {100, 100}, "test", false, 0}
+    dd := mg.Dropdown {{50, 100}, {100, 100}, false, -1, "", false, {"aveia", "maca", "banana", "melancia", "leite"}};
+    tb := mg.Textbox {{50, 200}, {100, 100}, false, "test", 0}
     
     for !rl.WindowShouldClose() {
 	rl.BeginDrawing()
