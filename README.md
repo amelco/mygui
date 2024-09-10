@@ -14,4 +14,4 @@ A simple immediate mode GUI implemented using Odin and Raylib
 - [ ] CheckButon
 
 ## Desired future features
-- [] Compile to WASM to use same GUI in a webpage
+- [ ] Compile to WASM to use same GUI in a webpage

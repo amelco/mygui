@@ -6,7 +6,8 @@ import "core:strings"
 
 INFO :: rl.TraceLogLevel.INFO
 
-main :: proc() {   
+@export
+begin_program :: proc() {
     rl.InitWindow(800, 600, "Hello")
     rl.SetWindowMonitor(1)
     rl.SetTargetFPS(60)
@@ -29,4 +30,8 @@ main :: proc() {
 
 	rl.EndDrawing()
     }
+}
+
+main :: proc() {
+    begin_program()
 }
